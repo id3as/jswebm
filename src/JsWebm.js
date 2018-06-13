@@ -168,7 +168,7 @@ class JsWebm {
     }
 
     /**
-     * 
+     *
      * Sets up the meta data validation after
      */
      validateMetadata() {
@@ -248,7 +248,7 @@ class JsWebm {
     initOpusHeaders(trackEntry){
         this.audioTrack = trackEntry;
     }
-    
+
     initVorbisHeaders(trackEntry) {
         var headerParser = new DataView(trackEntry.codecPrivate);
         var packetCount = headerParser.getUint8(0);
@@ -294,6 +294,7 @@ class JsWebm {
 
     demux(data) {
         this.queueData(data);
+        var status = false;
         switch (this.state) {
             case STATE_INITIAL:
             this.initDemuxer();
@@ -350,21 +351,21 @@ class JsWebm {
         //this.processing = false;
         var delta = (getTimestamp() - start);
         this.cpuTime += delta;
-        
+
         //return status;
         if (status === 1 || status === true) {
             result = 1;
         } else {
             result = 0;
         }
-        
+
         if(!this.dataInterface.currentBuffer)
             result = 0;
         callback(!!result);
     }
 
     /**
-     * General process loop, 
+     * General process loop,
      * TODO, refactor this!!!!!
      */
      load() {
@@ -485,7 +486,7 @@ class JsWebm {
                 if (!this.elementEBML)
                     return null;
 
-                if (this.elementEBML.id !== 0x1A45DFA3) { //EBML 
+                if (this.elementEBML.id !== 0x1A45DFA3) { //EBML
                     //If the header has not loaded and the first element is not the header, do not continue
                     console.warn('INVALID PARSE, HEADER NOT LOCATED');
                 }
@@ -509,7 +510,7 @@ class JsWebm {
                         return null;
                     break;
 
-                    case 0x42F7: //EBMLReadVersion 
+                    case 0x42F7: //EBMLReadVersion
                     var readVersion = dataInterface.readUnsignedInt(this.tempElementHeader.size);
                     if (readVersion !== null)
                         this.readVersion = readVersion;
@@ -664,7 +665,7 @@ class JsWebm {
 
     /*
      * @param {number} timeSeconds seconds to jump to
-     * @param {function} callback 
+     * @param {function} callback
      */
      seekToKeypoint(timeSeconds, callback) {
         this.state = STATE_SEEKING;
